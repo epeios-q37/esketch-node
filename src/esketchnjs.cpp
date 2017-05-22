@@ -31,7 +31,7 @@
 # define OWNER_NAME			"Claude SIMON"
 # define OWNER_CONTACT		"http://q37.info/contact/"
 # define COPYRIGHT			COPYRIGHT_YEARS " " OWNER_NAME " (" OWNER_CONTACT ")"	
-# define VERSION			"0.1.3"
+# define VERSION			"0.1.0"
 
 namespace {
 	void GetText_( const sclnjs::sArguments &Arguments )
