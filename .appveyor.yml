@@ -28,7 +28,7 @@ before_build:
 build_script:
 - node-pre-gyp /m build
 
-after-build:
+after_build:
 - node -e "console.log( process.versions.modules );console.log(require('./package.json').version)"
 - echo %platform% 
 
