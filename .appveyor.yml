@@ -6,14 +6,14 @@ environment:
     - nodejs_version: "4"
 
 platform:
-- x86
+- ia32
 - x64
 
 # configuration: Release
 
 os :
-- Visual Studio 2013
-- Visual Studio 2015
+# - Visual Studio 2013
+# - Visual Studio 2015
 - Visual Studio 2017
 
 install:
@@ -27,6 +27,10 @@ before_build:
 
 build_script:
 - node-pre-gyp /m build
+
+after-build:
+- node -e "console.log( process.versions.modules );console.log(require('./package.json').version)"
+- echo %platform% 
 
 test_script:
 - node demo.js

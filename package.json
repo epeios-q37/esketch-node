@@ -21,6 +21,7 @@
     "aws-sdk": "2.x"
   },
   "scripts": {
+    "prepublish": "npm ls",
     "preinstall": "npm install node-pre-gyp",
     "install": "node-pre-gyp install --fallback-to-build",
     "test": "node demo.js"
