@@ -31,12 +31,12 @@ build_script:
 after_build:
 - node -e "console.log( process.versions.modules );console.log(require('./package.json').version)"
 - if "%platform%"=="x86" set platform="ia32"
-- echo | set /p="esketch-" >name
+- echo | set /p="esketch-" >name || true
 - node -e "console.log(require('./package.json').version);" >> name
-- echo | set /p="-node-v" >> name
+- echo | set /p="-node-v" >> name || true
 - node -e "console.log(process.versions.modules);" >> name
-- echo | set /p="-win32-" >> name
-- echo | set /p=%platfom% >> name
+- echo | set /p="-win32-" >> name || true
+- echo | set /p=%platfom% >> name || true
 - type name
 - set /p name= <name
 - echo %name%
