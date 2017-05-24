@@ -32,11 +32,11 @@ after_build:
 - node -e "console.log( process.versions.modules );console.log(require('./package.json').version)"
 - if "%platform%"=="x86" set platform="ia32"
 - echo | set /p="esketch-" >name
-- node -e "console.log(require('./package.json').version)" >> name
+- node -e "console.log(require('./package.json').version);" >> name
 - echo | set /p="-node-v" >> name
-- node -e "console.log( process.versions.modules ) >> name
+- node -e "console.log(process.versions.modules);" >> name
 - echo | set /p="-win32-" >> name
-- echo %platform% | set /p="-win32-" >> name
+- echo | set /p=%platfom% >> name
 - type name
 - set /p name= <name
 - echo %name%
