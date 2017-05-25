@@ -29,18 +29,18 @@ build_script:
 - node-pre-gyp /m build
 
 after_build:
-- node -e "console.log( process.versions.modules );console.log(require('./package.json').version)"
+- node -e "process.stdout.write( process.versions.modules );process.stdout.write(require('./package.json').version)"
 - if "%platform%"=="x86" set platform="ia32"
 - echo | set /p="esketch-" >name || true
-- node -e "console.log(require('./package.json').version);" > inter
+- node -e "process.stdout.write(require('./package.json').version);" > inter
 - set /p inter= < inter
 - echo | set /p=%inter% >>name || true
 - echo | set /p="-node-v" >> name || true
-- node -e "console.log(process.versions.modules);" > inter
+- node -e "process.stdout.write(process.versions.modules);" > inter
 - set /p inter= < inter
 - echo | set /p=%inter% >>name || true
 - echo | set /p="-win32-" >> name || true
-- echo | set /p=%platfom% >> name || true
+- echo | set /p=%platform% >> name || true
 - type name
 - set /p name= <name
 - echo %name%
