@@ -30,8 +30,8 @@ build_script:
 
 after_build:
 - node -e "process.stdout.write( process.versions.modules );process.stdout.write(require('./package.json').version)"
-- if "%platform%"=="x86" set platform="ia32"
-- echo | set /p="esketch-" >name || true
+- if "%platform%"=="x86" set platform=ia32
+- echo | set /p="esketch-v" >name || true
 - node -e "process.stdout.write(require('./package.json').version);" > inter
 - set /p inter= < inter
 - echo | set /p="%inter%" >>name || true
