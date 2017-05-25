@@ -29,21 +29,16 @@ build_script:
 - node-pre-gyp /m build
 
 after_build:
-- node -e "process.stdout.write( process.versions.modules );process.stdout.write(require('./package.json').version)"
+- node -e "process.stdout.write( process.versions.modules + ' - ' + require('./package.json').version)"
 - if "%platform%"=="x86" set platform=ia32
-- echo | set /p="esketch-v" >name || true
-- node -e "process.stdout.write(require('./package.json').version);" > inter
-- set /p inter= < inter
-- echo | set /p="%inter%" >>name || true
-- echo | set /p="-node-v" >> name || true
-- node -e "process.stdout.write(process.versions.modules);" > inter
-- set /p inter= < inter
-- echo | set /p="%inter%" >>name || true
-- echo | set /p="-win32-" >> name || true
-- echo | set /p="%platform%" >> name || true
-- type name
-- set /p name= <name
-- echo .%name%.
+- echo | set /p="esketch-v" >tmpfile.tmp || true
+- node -e "process.stdout.write(require('./package.json').version);" >>tmpfile.tmp
+- echo | set /p="-node-v" >>tmpfile.tmp || true
+- node -e "process.stdout.write(process.versions.modules);" >>tmpfile.tmp
+- echo | set /p="-win32-" >>tmpfile.tmp || true
+- echo | set /p="%platform%" >>tmpfile.tmp || true
+- set /p addon= <tmpfile.tmp
+- echo .%addon%.
 
 test_script:
 - node demo.js
