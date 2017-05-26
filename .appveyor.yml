@@ -1,4 +1,6 @@
 environment:
+  version: 20170522
+  affix: esketch
   matrix:
     - nodejs_version: "7"
     - nodejs_version: "6"
@@ -27,10 +29,6 @@ before_build:
 
 build_script:
 - node-pre-gyp /m build
-
-environment:
-  version: 20170522
-  affix: esketch
 
 after_build:
 - node -e "process.stdout.write( process.versions.modules + ' - ' + require('./package.json').version)"
