@@ -6,6 +6,8 @@ environment:
     - nodejs_version: "6"
     - nodejs_version: "5"
     - nodejs_version: "4"
+	
+skip_tags: true	
 
 platform:
 - x86
@@ -48,7 +50,7 @@ test_script:
 - node demo.js
 
 artifacts:
-- path: "*.tar.gz"
+- path: '*.tar.gz'
 
 deploy:
   tag: $(version)
@@ -56,7 +58,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: kKebvPLjikQbZ7E1Vm8omoYc9K0wOcKxjWsglp3+D4fV9ev/FaWr8ZBI+AseOTis
-  artifact: "*.tar.gz"
+  artifact: '*.tar.gz'
   draft: false
   prerelease: false
 
