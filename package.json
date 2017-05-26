@@ -10,7 +10,7 @@
   "binary": {
     "module_name": "esketchnjs",
     "module_path": "./lib/{platform}-{arch}/",
-    "remote_path": "./epeios-q37/esketch-node/releases/tag/{version}/",
+    "remote_path": "./epeios-q37/esketch-node/releases/download/{version}/",
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
     "host": "https://github.com"
   },
