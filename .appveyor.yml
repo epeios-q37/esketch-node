@@ -41,7 +41,7 @@ after_build:
 - echo .%addon%.
 - set dir=win32-%platform%
 - mkdir %dir%
-- copy %affix%njs.node %dir%
+- copy lib/%dir%/*.node %dir%
 - 7z a %addon%.tar.gz %dir%
 
 test_script:
