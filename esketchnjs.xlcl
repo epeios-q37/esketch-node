@@ -524,8 +524,8 @@
   <Translation language="fr">Divergence d'encodage</Translation>
   <Translation language="en">Encoding discrepancy</Translation>
  </Translations>
- <Translations text="GetText">
-  <Translation language="fr">Texte passé en argument à l'addon' : '%1'.</Translation>
-  <Translation language="en">Text given to the addon as argument : '%1'.</Translation>
+ <Translations text="Argument">
+  <Translation language="fr">Argument reçu par l'addon' : '%1'.</Translation>
+  <Translation language="en">Argument received by the addon : '%1'.</Translation>
  </Translations>
 </Locale>

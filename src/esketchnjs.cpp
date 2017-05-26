@@ -33,7 +33,7 @@
 # define COPYRIGHT			COPYRIGHT_YEARS " " OWNER_NAME " (" OWNER_CONTACT ")"	
 
 namespace {
-	void GetText_( const sclnjs::sArguments &Arguments )
+	void ReturnArgument_( const sclnjs::sArguments &Arguments )
 	{
 	qRH
 		v8q::sString RawInput;
@@ -46,7 +46,7 @@ namespace {
 		RawInput.Get( Input );
 
 		Text.Init();
-		sclmisc::GetBaseTranslation( "GetText", Text, Input );
+		sclmisc::GetBaseTranslation( "Argument", Text, Input );
 
 		Arguments.SetReturnValue( v8q::sString( Text ) );
 	qRR
@@ -58,7 +58,7 @@ namespace {
 
 void sclnjs::SCLNJSRegister( sclnjs::sRegistrar &Registrar )
 {
-	Registrar.Register( GetText_ );
+	Registrar.Register( ReturnArgument_ );
 }
 
 SCLNJS_MODULE( esketch );

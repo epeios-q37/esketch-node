@@ -36,5 +36,5 @@ if ( process.env.EPEIOS_SRC ) {
 }
 
 module.exports = esketch;
-module.exports.getText = ( text ) => { return esketch._wrapper( 0, text ) };
+module.exports.returnArgument = ( text ) => { return esketch._wrapper( 0, text ) };
 
