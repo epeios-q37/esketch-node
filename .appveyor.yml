@@ -42,7 +42,7 @@ after_build:
 - set dir=win32-%platform%
 - mkdir %dir%
 - copy lib\%dir%\*.node %dir%
-- 7z a %addon%.tar.gz %dir%
+- 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
 - node demo.js
