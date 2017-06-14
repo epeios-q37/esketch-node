@@ -41,9 +41,7 @@ after_build:
 - echo | set /p="%platform%" >>tmpfile.tmp || true
 - set /p addon= <tmpfile.tmp
 - echo .%addon%.
-- set dir=win32-%platform%
-- mkdir %dir%
-- copy lib\%dir%\*.dll %dir%
+- copy %affix%njs.dll %dir%
 - 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
