@@ -47,7 +47,7 @@ after_build:
 - 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
-- node demo.js
+- node test.js
 
 artifacts:
 - path: '*.tar.gz'
