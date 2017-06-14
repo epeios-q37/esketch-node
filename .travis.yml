@@ -18,4 +18,5 @@ script:
 #- npm install node-pre-gyp
 #- node-pre-gyp configure
 #- node-pre-gyp build
-- node demo.js
+- npm install njsq
+- node test.js
