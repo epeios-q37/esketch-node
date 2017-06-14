@@ -1,5 +1,5 @@
 environment:
-  version: 20170607
+  version: 20170614
   affix: esketch
   matrix:
     - nodejs_version: "8"
@@ -36,15 +36,14 @@ build_script:
 after_build:
 - node -e "process.stdout.write( process.versions.modules + ' - ' + require('./package.json').version)"
 - if "%platform%"=="x86" set platform=ia32
-- echo | set /p="%affix%-v%version%-node-v" >>tmpfile.tmp || true
-- node -e "process.stdout.write(process.versions.modules);" >>tmpfile.tmp
+- echo | set /p="%affix%-v%version%" >>tmpfile.tmp || true
 - echo | set /p="-win32-" >>tmpfile.tmp || true
 - echo | set /p="%platform%" >>tmpfile.tmp || true
 - set /p addon= <tmpfile.tmp
 - echo .%addon%.
 - set dir=win32-%platform%
 - mkdir %dir%
-- copy lib\%dir%\*.node %dir%
+- copy lib\%dir%\*.dll %dir%
 - 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
