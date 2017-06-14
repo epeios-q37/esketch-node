@@ -17,10 +17,8 @@
 	along with esketch. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sclnjs.h"
 #include "sclmisc.h"
-
-#include "nodeq.h"
+#include "sclnjs.h"
 
 # define NAME_MC			"eSketchNJS"
 # define NAME_LC			"esketchnjs"
@@ -32,28 +30,29 @@
 # define OWNER_CONTACT		"http://q37.info/contact/"
 # define COPYRIGHT			COPYRIGHT_YEARS " " OWNER_NAME " (" OWNER_CONTACT ")"	
 
+void sclnjs::SCLNJSInfo( txf::sOFlow &Flow )
+{
+	Flow << NAME_MC << " v" << VERSION << txf::nl
+		 << txf::pad << "Build : " __DATE__ " " __TIME__ " (" << cpe::GetDescription() << ')';
+}
+
 namespace {
-	void ReturnArgument_( const sclnjs::sArguments &Arguments )
+	void ReturnArgument_( sclnjs::sArguments &Arguments )
 	{
 	qRH
-		v8q::sString RawInput;
 		str::wString Input, Text;
 	qRB
-		RawInput.Init();
-		Arguments.Get( RawInput );
-
 		Input.Init();
-		RawInput.Get( Input );
+		Arguments.Get( Input );
 
 		Text.Init();
 		sclmisc::GetBaseTranslation( "Argument", Text, Input );
 
-		Arguments.SetReturnValue( v8q::sString( Text ) );
+		Arguments.SetReturnValue( Text );
 	qRR
 	qRT
 	qRE
 	}
-
 }
 
 void sclnjs::SCLNJSRegister( sclnjs::sRegistrar &Registrar )
@@ -61,8 +60,6 @@ void sclnjs::SCLNJSRegister( sclnjs::sRegistrar &Registrar )
 	Registrar.Register( ReturnArgument_ );
 }
 
-SCLNJS_MODULE( esketch );
-
 const char *sclmisc::SCLMISCTargetName = NAME_LC;
 const char *sclmisc::SCLMISCProductName = NAME_MC;
-const char *sclnjs::SCLNJSProductVersion = VERSION;
+// const char *sclnjs::SCLNJSProductVersion = VERSION;

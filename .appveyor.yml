@@ -1,7 +1,8 @@
 environment:
-  version: 20170522
+  version: 20170607
   affix: esketch
   matrix:
+    - nodejs_version: "8"
     - nodejs_version: "7"
     - nodejs_version: "6"
     - nodejs_version: "5"
@@ -60,6 +61,8 @@ deploy:
     secure: kKebvPLjikQbZ7E1Vm8omoYc9K0wOcKxjWsglp3+D4fV9ev/FaWr8ZBI+AseOTis
   draft: false
   prerelease: false
+  on:
+   nodejs_version: "8"
 
 # matrix:
   # allow_failures:

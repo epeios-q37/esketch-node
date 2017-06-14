@@ -37,10 +37,9 @@ mods += lstctn mns mtk mtx ntvstr
 mods += que sdr stkbse stkbch stkctn 
 mods += str strng tagsbs tol txf 
 mods += tys uys utf xtf llio 
-mods += dlbrry nodeq plgn plgncore tht 
-mods += thtsub uvq v8q bomhdl cdgb64 
-mods += fil fnm lcl ntvstr rgstry 
-mods += stsfsm xml xpp 
+mods += dlbrry njs plgn plgncore tht 
+mods += thtsub bomhdl cdgb64 fil fnm 
+mods += lcl rgstry stsfsm xml xpp 
 
 pmods += pllio 
 
@@ -211,6 +210,10 @@ ifeq ("$(os)","$(Cygwin)")
     
 	endif
 	
+	ifneq ("$(target)","$(Android)")
+		binary=$(name).dll
+		lo += -Wl,--kill-at -shared
+	endif
 
 
 	dest=/cygdrive/h/bin/
@@ -243,7 +246,8 @@ ifeq ("$(os)", "$(MinGW)")
 		endif
 	endif
 
-	
+	binary=$(name).dll
+	lo += -Wl,--kill-at -shared
 
 	dest=/h/bin/
 endif
@@ -272,7 +276,9 @@ ifeq ("$(os)","$(GNULinux)")
 			lo += -m64
 		endif
 	endif
-	
+	binary=lib$(name).so
+	lo += -shared
+	co += -fPIC
 
 	dest=/home/csimon/bin/
 endif
@@ -301,7 +307,9 @@ ifeq ("$(os)","$(Linux)")
 			lo += -m64
 		endif
 	endif
-	
+	binary=lib$(name).so
+	lo += -shared
+	co += -fPIC
 endif
 
 #############################
@@ -326,7 +334,8 @@ ifeq ("$(os)","$(MacOS)")
 			lo += -m64
 		endif
 	endif
-	
+	binary=lib$(name).dylib
+	lo += -dynamiclib
 
 	dest=/Users/csimon/bin/
 endif
@@ -340,7 +349,7 @@ ifeq ("$(target)","$(Android)")
 	rm -rf *.d
 endif
 
-copt += -DVERSION=\""20170526"\"
+copt += -DVERSION=\""20170607"\"
 copt += -DCOPYRIGHT_YEARS=\""2007-2017"\"
 copt += -DIDENTIFIER=\""d6a723cb-e88f-4f2f-b429-3adc207f1d62"\"
 

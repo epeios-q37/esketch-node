@@ -19,22 +19,27 @@
 
 "use strict"
 
-var esketch = null;
+var affix = "esketch";
 
-if ( process.env.EPEIOS_SRC ) {
- var addonPath = null;
- if ( process.platform == 'win32' )
-  addonPath = '/build/Debug/';
- else
-  addonPath = '/build/Release/';
-  esketch = require( __dirname + addonPath + 'esketchnjs.node');
+// Begin of generic part.
+var njsq = null;
+var addonPath = null;
+var path = require("path");
+
+if (process.env.EPEIOS_SRC) {
+    if (process.platform == 'win32')
+        addonPath = 'h:/bin/';
+    else
+        addonPath = '~/bin/';
+    njsq = require(addonPath + 'njsq.node');
 } else {
- const binary = require( 'node-pre-gyp' );
- const path = require( 'path' );
- const esketch_path = binary.find( path.resolve( path.join( __dirname, './package.json' ) ) );
- esketch = require( esketch_path );	
+    njsq = require('njsq');
+    addonPath = __dirname;
 }
 
-module.exports = esketch;
-module.exports.returnArgument = ( text ) => { return esketch._wrapper( 0, text ) };
+njsq.register(path.join(addonPath, affix + "njs" ).replace(/\\/g, "\\\\").replace(/'/g, "\\'"));
+module.exports = njsq;
+// End of generic part.
+
+module.exports.returnArgument = (text) => { return njsq._wrapper(0, text) };
 
