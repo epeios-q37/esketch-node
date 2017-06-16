@@ -23,7 +23,7 @@ script:
 - node-pre-gyp configure
 - node-pre-gyp build
 - echo "**** Start ****"
-- cat -Es build/*
+- cat -s build/*
 - echo "**** End ****"
 - node test.js
 
