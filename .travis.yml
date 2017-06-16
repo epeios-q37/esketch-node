@@ -1,6 +1,6 @@
 os:
 - linux
-- osx
+# - osx
 
 dist: trusty
 
@@ -11,7 +11,7 @@ node_js:
 # - "7"
 # - "6"
 # - "5"
-# - "4"
+- "4"
 
 script:
 # Below commented commands are automatically done.
