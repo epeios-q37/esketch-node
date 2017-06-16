@@ -1,5 +1,5 @@
 environment:
-  version: 20170614
+  version: 20170616
   affix: esketch
   matrix:
     - nodejs_version: "8"

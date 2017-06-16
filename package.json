@@ -1,6 +1,6 @@
 {
   "name": "esketch",
-  "version": "2017.6.14",
+  "version": "2017.6.16",
   "author": "Claude SIMON (http://q37.info/contact/)",
   "description": "Node.js addon template.",
   "main": "esketch.js",
@@ -10,12 +10,12 @@
   "binary": {
     "module_name": "esketchnjs",
     "module_path": ".",
-    "remote_path": "./epeios-q37/esketch-node/releases/download/v20170614/",
-    "package_name": "{module_name}-v20170614-{platform}-{arch}.tar.gz",
+    "remote_path": "./epeios-q37/esketch-node/releases/download/v20170616/",
+    "package_name": "{module_name}-v20170616-{platform}-{arch}.tar.gz",
     "host": "https://github.com"
   },
   "dependencies": {
-    "njsq": "<=2017.6.14",
+    "njsq": "<=2017.6.16",
     "node-pre-gyp": "0.6.x"
   },
   "devDependencies": {
