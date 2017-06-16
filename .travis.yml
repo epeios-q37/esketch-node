@@ -18,14 +18,12 @@ script:
 #- npm install node-pre-gyp
 #- node-pre-gyp configure
 #- node-pre-gyp build
-- npm install njsq
-- npm explore njsq -- node test.js
+# - npm install njsq
+# - npm explore njsq -- node test.js
 - node-pre-gyp configure
 - node-pre-gyp build
 - echo "**** Start ****"
-- cat binding.gyp
-- echo "**** Middle ****"
-- cat build/Makefile
+- cat -Es build/*
 - echo "**** End ****"
 - node test.js
 
