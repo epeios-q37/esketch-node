@@ -21,6 +21,7 @@ script:
 # - npm install njsq
 # - npm explore njsq -- node test.js
 - node-pre-gyp configure
+- ls
 - node-pre-gyp build
 - echo "**** Start ****"
 - cat -s build/*
