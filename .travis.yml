@@ -19,4 +19,12 @@ script:
 #- node-pre-gyp configure
 #- node-pre-gyp build
 - npm install njsq
+- npm explore njsq -- node test.js
+- node-pre-gyp configure
+- node-pre-gyp build
 - node test.js
+
+# To disable building on tags. Tags are supposed to begin with 'v' and only containing digits.
+branches:
+  except:
+    - /^v[0-9]/
