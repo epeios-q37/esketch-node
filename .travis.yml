@@ -24,6 +24,7 @@ script:
 - ls -l
 - node-pre-gyp build
 - ls -l
+- pwd
 # - echo "**** Start ****"
 # - cat -s build/*
 # - echo "**** End ****"
