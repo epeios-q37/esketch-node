@@ -10,6 +10,7 @@
      "epeios": "<!(IF DEFINED EPEIOS_SRC (echo <(stable)) ELSE (echo src/epeios/))",
      "src": "<!(IF DEFINED EPEIOS_SRC (echo ./) ELSE (echo src/) )",
      "ext": "dll",
+     "prefix": "",
     },
    },
    {
@@ -21,12 +22,14 @@
        "OS=='linux'",
        {
 	    "ext": "so",
+	    "prefix": "lib",
        },
       ],
       [
        "OS=='mac'",
        {
 	    "ext": "dylib",
+	    "prefix": "lib",
        }
       ],
      ],
@@ -80,7 +83,7 @@
    "dependencies": [ "<(module_name)" ],
    "copies": [
     {
-     "files": [ "<(PRODUCT_DIR)/<(module_name).<(ext)" ],
+     "files": [ "<(PRODUCT_DIR)/<(prefix)<(module_name).<(ext)" ],
      "destination": "<(module_path)"
     }
    ]
