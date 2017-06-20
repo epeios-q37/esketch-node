@@ -48,7 +48,10 @@ after_build:
 - 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
+- npm explore njsq -- node test.js
+- echo %ERRORLEVEL%
 - node test.js
+- echo %ERRORLEVEL%
 
 artifacts:
 - path: '*.tar.gz'
