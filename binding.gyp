@@ -39,11 +39,11 @@
  ],
  "targets": [
   {
-   "target_name": "<(prefix)<(module_name)",
+   "target_name": "<(module_name)",
    "type": "shared_library",
    "sources": [ "<(src)/esketchnjs.cpp", "<(epeios)/ags.cpp", "<(epeios)/aem.cpp", "<(epeios)/bch.cpp", "<(epeios)/bitbch.cpp", "<(epeios)/bso.cpp", "<(epeios)/cio.cpp", "<(epeios)/cpe.cpp", "<(epeios)/crptgr.cpp", "<(epeios)/cslio.cpp", "<(epeios)/crt.cpp", "<(epeios)/ctn.cpp", "<(epeios)/dir.cpp", "<(epeios)/dte.cpp", "<(epeios)/dtfbsc.cpp", "<(epeios)/dtfptb.cpp", "<(epeios)/epsmsc.cpp", "<(epeios)/err.cpp", "<(epeios)/fdr.cpp", "<(epeios)/flf.cpp", "<(epeios)/flsq.cpp", "<(epeios)/flw.cpp", "<(epeios)/flx.cpp", "<(epeios)/ias.cpp", "<(epeios)/idsq.cpp", "<(epeios)/iof.cpp", "<(epeios)/iop.cpp", "<(epeios)/lck.cpp", "<(epeios)/lst.cpp", "<(epeios)/lstbch.cpp", "<(epeios)/lstcrt.cpp", "<(epeios)/lstctn.cpp", "<(epeios)/mns.cpp", "<(epeios)/mtk.cpp", "<(epeios)/mtx.cpp", "<(epeios)/ntvstr.cpp", "<(epeios)/que.cpp", "<(epeios)/sdr.cpp", "<(epeios)/stkbse.cpp", "<(epeios)/stkbch.cpp", "<(epeios)/stkctn.cpp", "<(epeios)/str.cpp", "<(epeios)/strng.cpp", "<(epeios)/tagsbs.cpp", "<(epeios)/tol.cpp", "<(epeios)/txf.cpp", "<(epeios)/tys.cpp", "<(epeios)/uys.cpp", "<(epeios)/utf.cpp", "<(epeios)/xtf.cpp", "<(epeios)/llio.cpp", "<(epeios)/dlbrry.cpp", "<(epeios)/njs.cpp", "<(epeios)/plgn.cpp", "<(epeios)/plgncore.cpp", "<(epeios)/tht.cpp", "<(epeios)/thtsub.cpp", "<(epeios)/bomhdl.cpp", "<(epeios)/cdgb64.cpp", "<(epeios)/fil.cpp", "<(epeios)/fnm.cpp", "<(epeios)/lcl.cpp", "<(epeios)/rgstry.cpp", "<(epeios)/stsfsm.cpp", "<(epeios)/xml.cpp", "<(epeios)/xpp.cpp", "<(epeios)/sclargmnt.cpp", "<(epeios)/sclmisc.cpp", "<(epeios)/sclerror.cpp", "<(epeios)/scllocale.cpp", "<(epeios)/sclrgstry.cpp", "<(epeios)/sclnjs.cpp", 
 ],
-    "defines": ["VERSION=\"20170616\"", "COPYRIGHT_YEARS=\"2007-2017\""],
+    "defines": ["VERSION=\"20170620\"", "COPYRIGHT_YEARS=\"2007-2017\""],
    "include_dirs":  [ "<(src)", "<(epeios)", ],
    "conditions": [
     [
@@ -79,11 +79,11 @@
   },
   {
    "target_name": "action_after_build",
+   "dependencies": [ "<(module_name)" ],
    "type": "none",
-   "dependencies": [ "<(prefix)<(module_name)" ],
    "copies": [
     {
-     "files": [ "<(PRODUCT_DIR)/<(prefix)<(module_name).<(ext)" ],
+     "files": [ "<(PRODUCT_DIR)/<(module_name).<(ext)" ],
      "destination": "<(module_path)"
     }
    ]
