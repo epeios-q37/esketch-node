@@ -11,7 +11,7 @@
     "module_name": "esketchnjs",
     "module_path": ".",
     "remote_path": "./epeios-q37/esketch-node/releases/download/v20170621/",
-    "package_name": "{module_name}-v20170621-{platform}-{arch}.tar.gz",
+    "package_name": "{module_name}njs-v20170621-{platform}-{arch}.tar.gz",
     "host": "https://github.com"
   },
   "dependencies": {

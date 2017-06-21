@@ -51,7 +51,7 @@ test_script:
 - node --version
 - npm --version
 # - npm explore njsq -- node test.js
-# Above line does not work properly under node 4 & 5, below command is ued instead.
+# Above line does not work properly under node 4 & 5, so below command is used instead.
 - node node_modules/njsq/test.js 
 - node test.js
 
