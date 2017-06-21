@@ -2,11 +2,11 @@ environment:
   version: 20170621
   affix: esketch
   matrix:
-    - nodejs_version: "4"
     - nodejs_version: "8"
     - nodejs_version: "7"
     - nodejs_version: "6"
     - nodejs_version: "5"
+    - nodejs_version: "4"
 
 skip_tags: true	
 
@@ -51,6 +51,8 @@ test_script:
 - node --version
 - npm --version
 # - npm explore njsq -- node test.js
+# Above line does not work properly under node 4 & 5, below command is ued instead.
+- node node_modules/njsq/test.js 
 - node test.js
 
 artifacts:
