@@ -40,6 +40,7 @@ mods += tys uys utf xtf llio
 mods += dlbrry njs plgn plgncore tht 
 mods += thtsub bomhdl cdgb64 fil fnm 
 mods += lcl rgstry stsfsm xml xpp 
+mods += registry 
 
 pmods += pllio 
 
@@ -349,7 +350,7 @@ ifeq ("$(target)","$(Android)")
 	rm -rf *.d
 endif
 
-copt += -DVERSION=\""20170620"\"
+copt += -DVERSION=\""20170621"\"
 copt += -DCOPYRIGHT_YEARS=\""2007-2017"\"
 copt += -DIDENTIFIER=\""d6a723cb-e88f-4f2f-b429-3adc207f1d62"\"
 
