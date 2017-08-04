@@ -1,19 +1,19 @@
 #	Copyright (C) 2007-2017 Claude SIMON (http://q37.info/contact/).
 #
-#	This file is part of esketch.
+#	This file is part of eSketch.
 #
-#	esketch is free software: you can redistribute it and/or
+#	eSketch is free software: you can redistribute it and/or
 #	modify it under the terms of the GNU Affero General Public License
 #	published by the Free Software Foundation, either version 3 of the
 #	License, or (at your option) any later version.
 #
-#	esketch is distributed in the hope that it will be useful,
+#	eSketch is distributed in the hope that it will be useful,
 #	but WITHOUT ANY WARRANTY; without even the implied warranty of
 #	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 #	Affero General Public License for more details.
 #
 #	You should have received a copy of the GNU Affero General Public License
-#	along with esketch. If not, see <http://www.gnu.org/licenses/>.
+#	along with eSketch. If not, see <http://www.gnu.org/licenses/>.
 
 name = esketchnjs
 
@@ -25,8 +25,6 @@ copt += -DE_DEBUG
 # For using <setjmp.h> instead of C++ exceptions.
 #copt += -DERR_JMPUSE
 	
-mods += sclargmnt sclmisc sclerror scllocale sclrgstry 
-mods += sclnjs 
 mods += ags aem bch bitbch bso 
 mods += cio cpe crptgr cslio crt 
 mods += ctn dir dte dtfbsc dtfptb 
@@ -40,6 +38,8 @@ mods += tys uys utf xtf llio
 mods += dlbrry njs plgn plgncore tht 
 mods += thtsub bomhdl cdgb64 fil fnm 
 mods += lcl rgstry stsfsm xml xpp 
+mods += sclargmnt sclmisc sclerror scllocale sclrgstry 
+mods += sclnjs 
 mods += registry 
 
 pmods += pllio 
@@ -144,6 +144,17 @@ endif
 
 ##########################
 		
+
+####################################
+# For Android (Termux) environment #
+####################################
+
+ifeq ("$(os)","$(Android)")
+
+endif
+
+#############################
+	
 ###################################
 ###################################
 ##### DON'T MODIFY BELOW !!! ######
@@ -343,6 +354,35 @@ endif
 
 ##########################
 		
+
+####################################
+# For Android (Termux) environment #
+####################################
+
+ifeq ("$(os)","$(Android)")
+ 
+	co += -std=gnu++11 -DUNICODE -D_FILE_OFFSET_BITS=64
+	
+	mods += $(pmods)
+
+	libs += -lpthread -ldl -lrt
+	
+	ifeq ("$(target)","$(IA_32)")
+		co += -m32
+		lo += -m32
+	else # 'ifeq' on other line due to GNU 3.80 (Maemo on N900).
+		ifeq ("$(target)","$(AMD64)")
+			co += -m64
+			lo += -m64
+		endif
+	endif
+	binary=lib$(name).so
+	lo += -shared
+	co += -fPIC
+endif
+
+#############################
+		
 all: $(binary)
 
 	rm -rf *.o
@@ -350,7 +390,7 @@ ifeq ("$(target)","$(Android)")
 	rm -rf *.d
 endif
 
-copt += -DVERSION=\""20170621"\"
+copt += -DVERSION=\""20170804"\"
 copt += -DCOPYRIGHT_YEARS=\""2007-2017"\"
 copt += -DIDENTIFIER=\""d6a723cb-e88f-4f2f-b429-3adc207f1d62"\"
 

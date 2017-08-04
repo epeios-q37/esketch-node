@@ -1,5 +1,5 @@
 environment:
-  version: 20170621
+  version: 20170804
   affix: esketch
   matrix:
     - nodejs_version: "8"
@@ -52,8 +52,12 @@ test_script:
 - npm --version
 # - npm explore njsq -- node test.js
 # Above line does not work properly under node 4 & 5, so below command is used instead.
+- echo "***** 'NJSq' TEST BEGIN *****"
 - node node_modules/njsq/test.js 
+- echo "***** 'NJSq' TEST BEGIN *****"
+- echo "***** 'eSketch' TEST BEGIN *****"
 - node test.js
+- echo "***** 'eSketch' TEST END *****"
 
 artifacts:
 - path: '*.tar.gz'
