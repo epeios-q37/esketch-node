@@ -34,7 +34,7 @@ if (process.env.EPEIOS_SRC) {
         componentPath = '~/bin/';
     njsq = require(componentPath + 'njsq.node');
 } else {
-    njsq = require('njsq');
+    njsq = require('NJSq');
     componentPath = __dirname;
 }
 
