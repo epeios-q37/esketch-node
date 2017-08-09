@@ -1,8 +1,8 @@
 # eSketch
 
-This component is only a template to facilitate the creation of a [*Node.js*](http://en.wikipedia.org/wiki/Node.js) *addon*.
-
 [![NPM](https://nodei.co/npm/esketch.png)](https://nodei.co/npm/esketch/)
+
+This component is only a template to facilitate the creation of a [*Node.js*](http://en.wikipedia.org/wiki/Node.js) *addon*.
 
 For more information, see [http://q37.info/tools/esketch/](http://q37.info/tools/esketch/).
 
