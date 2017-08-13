@@ -17,24 +17,22 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-// SoCLe Node.JS
+// Native 4 (for) All  SoCLe
 
-#ifndef SCLNJS_INC_
-# define SCLNJS_INC_
+#ifndef SCLN4A_INC_
+# define SCLN4A_INC_
 
-# define SCLNJS_NAME		"SCLNJS"
+# define SCLN4A_NAME		"SCLN4A"
 
-# if defined( E_DEBUG ) && !defined( SCLNJS_NODBG )
-#  define SCLNJS_DBG
+# if defined( E_DEBUG ) && !defined( SCLN4A_NODBG )
+#  define SCLN4A_DBG
 # endif
 
-# include "njs.h"
-
 # include "err.h"
-# include "str.h"
+# include "n4a.h"
 
-namespace sclnjs {
-	typedef njs::cCaller cCaller_;
+namespace scln4a {
+	typedef n4a::cCaller cCaller_;
 
 	inline void GetArgument_(
 		int Index,
@@ -46,7 +44,7 @@ namespace sclnjs {
 		cCaller_ &Caller,
 		str::dString *Value )
 	{
-		return Caller.GetArgument( Index, njs::tString, Value );
+		return Caller.GetArgument( Index, n4a::tString, Value );
 	}
 
 	inline void GetArgument_(
@@ -93,34 +91,31 @@ namespace sclnjs {
 			bso::sUInt Index,
 			item &Item ) const
 		{
-			if ( Index == 0 )
-				qRFwk();
 
-			Get_( Index, C_(), Item );
+			GetArgument_( Index, C_(), Item );
 		}
 		template <typename ...items> inline void GetArgument( items &...Items ) const
 		{
-			GetArgument_( 1, C_(), Items... );
+			GetArgument_( 0, C_(), Items... );
 		}
 		void SetReturnValue( const str::dString &Value )
 		{
-			C_().SetReturnValue( njs::tString, &Value );
+			C_().SetReturnValue( n4a::tString, &Value );
 		}
 	};
 
-	typedef void (fFunction)( sCaller &Caller );
+	typedef void ( fFunction )( sCaller &Caller );
 
-	class sRegistrar
-	{
+	class sRegistrar {
 	private:
-		qRMV( njs::cRegistrar, R_, Registrar_ );
+		qRMV( n4a::cRegistrar, R_, Registrar_ );
 	public:
 		void reset( bso::sBool = true )
 		{
 			Registrar_ = NULL;
 		}
 		qCDTOR( sRegistrar );
-		void Init( njs::cRegistrar &Registrar )
+		void Init( n4a::cRegistrar &Registrar )
 		{
 			Registrar_ = &Registrar;
 		}
@@ -130,11 +125,10 @@ namespace sclnjs {
 		}
 	};
 
-	void SCLNJSRegister( sRegistrar &Registrar );	// To define by user.
-	void SCLNJSInfo( txf::sOFlow &Flow );	// To define by user.
+	void SCLN4ARegister( sRegistrar &Registrar );	// To define by user.
+	void SCLN4AInfo( txf::sOFlow &Flow );	// To define by user.
 
-	extern const char *SCLNJSProductVersion;	// To define by user.
+	extern const char *SCLN4AProductVersion;	// To define by user.
 }
-
 
 #endif

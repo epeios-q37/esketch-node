@@ -525,7 +525,7 @@
   <Translation language="en">Encoding discrepancy</Translation>
  </Translations>
  <Translations text="Argument">
-  <Translation language="fr">Argument reçu par le composant : '%1'.</Translation>
-  <Translation language="en">Argument received by the component : '%1'.</Translation>
+  <Translation language="fr">Argument reçu du composant : '%1'.</Translation>
+  <Translation language="en">Argument received from component : '%1'.</Translation>
  </Translations>
 </Locale>

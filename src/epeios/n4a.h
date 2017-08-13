@@ -17,26 +17,27 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-// Node.JS
-// This library is the shared part between the 'njsq' tool, and the 'sclnjs' library.
+// Native 4 (for) All
+// The 'N4A' (Native For All) project makes it possible to easily provide native component
+// to runtime systems for interpreted languages (Node.js (JavaScript), JRE (Java), Zend (PHP)...).
+// This library provides the abstraction layer between the runtime and the component.
 
-#ifndef NJS_INC_
-# define NJS_INC_
+#ifndef N4A_INC_
+# define N4A_INC_
 
-# define NJS_NAME		"NJS"
+# define N4A_NAME		"N4A"
 
-# if defined( E_DEBUG ) && !defined( NJS_NODBG )
-#  define NJS_DBG
+# if defined( E_DEBUG ) && !defined( N4A_NODBG )
+#  define N4A_DBG
 # endif
 
-# include "sclmisc.h"
+# define N4A_REGISTER_FUNCTION_NAME		N4ARegister
 
 # include "err.h"
+# include "sclmisc.h"
 # include "tol.h"
 
-# define NJS_REGISTER_FUNCTION_NAME		NJSRegister
-
-namespace njs {
+namespace n4a {
 	qENUM( Type ) {
 		tString,
 		tamount,
@@ -45,11 +46,11 @@ namespace njs {
 
 	class cCaller {
 	protected:
-		virtual void NJSGetArgument(
+		virtual void N4AGetArgument(
 			int Index,
 			eType Type,
 			void *Value ) = 0;
-		virtual void NJSSetReturnValue(
+		virtual void N4ASetReturnValue(
 			eType Type,
 			const void *Value ) = 0;
 	public:
@@ -59,52 +60,52 @@ namespace njs {
 			eType Type,
 			void *Value )
 		{
-			return NJSGetArgument( Index, Type, Value );
+			return N4AGetArgument( Index, Type, Value );
 		}
 		void SetReturnValue(
 			eType Type,
 			const void *Value )
 		{
-			return NJSSetReturnValue( Type, Value );
+			return N4ASetReturnValue( Type, Value );
 		}
 	};
 
 	class cRegistrar {
 	protected:
-		virtual void NJSRegister( void *Function ) = 0;
+		virtual void N4ARegister( void *Function ) = 0;
 	public:
 		qCALLBACK( Registrar );
 		void Register( void *Function )
 		{
-			return NJSRegister( Function );
+			return N4ARegister( Function );
 		}
 	};
 
 	// Destroyed by launching by 'delete', so must be created with 'new' !
 	class cLauncher {
 	protected:
-		virtual void NJSLaunch(
+		virtual void N4ALaunch(
 			void *Function,
 			cCaller &Caller ) = 0;
-		virtual void NJSInfo( str::dString &Info ) = 0;
+		virtual void N4AInfo( str::dString &Info ) = 0;
 	public:
 		qCALLBACK( Launcher );
 		void Launch(
 			void *Function,
 			cCaller &Caller )
 		{
-			return NJSLaunch( Function, Caller );
+			return N4ALaunch( Function, Caller );
 		}
 		void Info( str::dString &Info )
 		{
-			return NJSInfo( Info );
+			return N4AInfo( Info );
 		}
 	};
 
-#define NJS_DATA_VERSION	"1"
+#define N4A_DATA_VERSION	"1"
 
 #pragma pack( push, 1)
-	// NOTA : If modified, increment 'NJS_DATA_VERSION' !
+	// NOTA : If modified, increment 'N4A_DATA_VERSION' !
 	class sData {
 	public:
 		const char *Version;	// Always first.

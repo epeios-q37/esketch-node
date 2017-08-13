@@ -17,9 +17,9 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#define NJS_COMPILATION_
+#define N4A_COMPILATION_
 
-#include "njs.h"
+#include "n4a.h"
 
-using namespace njs;
+using namespace n4a;
 

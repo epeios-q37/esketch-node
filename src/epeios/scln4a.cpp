@@ -17,14 +17,11 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#define SCLNJS_COMPILATION_
+#define SCLN4A_COMPILATION_
 
-#include "sclnjs.h"
+#include "scln4a.h"
 
-#include "sclerror.h"
-#include "sclmisc.h"
-
-using namespace sclnjs;
+using namespace scln4a;
 
 #ifdef CPE_S_WIN
 # define FUNCTION_SPEC __declspec(dllexport)
@@ -32,13 +29,13 @@ using namespace sclnjs;
 # define FUNCTION_SPEC
 #endif
 
-typedef njs::cLauncher cLauncher_;
+typedef n4a::cLauncher cLauncher_;
 
 class sLauncher_
 : public cLauncher_
 {
 protected:
-	virtual void NJSLaunch(
+	virtual void N4ALaunch(
 		void *Function,
 		cCaller_ &RawCaller ) override
 	{
@@ -48,7 +45,7 @@ protected:
 
 		((fFunction *)Function )( Caller );
 	}
-	virtual void NJSInfo( str::dString &Info ) override
+	virtual void N4AInfo( str::dString &Info ) override
 	{
 	qRH
 		flx::rStringOFlow BaseFlow;
@@ -57,7 +54,7 @@ protected:
 		BaseFlow.Init( Info );
 		Flow.Init( BaseFlow );
 
-		SCLNJSInfo( Flow );
+		SCLN4AInfo( Flow );
 	qRR
 	qRT
 	qRE
@@ -67,11 +64,11 @@ public:
 	{}
 };
 
-extern "C" FUNCTION_SPEC njs::fRegister NJS_REGISTER_FUNCTION_NAME;
+extern "C" FUNCTION_SPEC n4a::fRegister N4A_REGISTER_FUNCTION_NAME;
 
-njs::cLauncher *NJSRegister(
-	njs::cRegistrar *RawRegistrar,
-	njs::sData *Data )
+n4a::cLauncher *N4ARegister(
+	n4a::cRegistrar *RawRegistrar,
+	n4a::sData *Data )
 {
 	sLauncher_ *Launcher = NULL;
 qRFH
@@ -88,7 +85,7 @@ qRFB
 
 	Registrar.Init( *RawRegistrar );
 
-	sclnjs::SCLNJSRegister( Registrar );
+	scln4a::SCLN4ARegister( Registrar );
 qRFR
 	if ( Launcher != NULL )
 		delete Launcher;
@@ -96,6 +93,3 @@ qRFT
 qRFE( sclmisc::ErrFinal() )
 	return Launcher;
 }
-
-
-
