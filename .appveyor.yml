@@ -52,7 +52,7 @@ test_script:
 - npm --version
 # - npm explore njsq -- node test.js
 # Above line does not work properly under node 4 & 5, so below command is used instead.
-- node -e "process.stdout.write( \"***** 'NJSq' TEST BEGIN *****\n\" )" && npm explore njsq -- node test.js && node -e "process.stdout.write( \"***** 'NJSq' TEST END *****\n\" )"
+- node -e "process.stdout.write( \"***** 'NJSq' TEST BEGIN *****\n\" )" && node node_modules/njsq/test.js && node -e "process.stdout.write( \"***** 'NJSq' TEST END *****\n\" )"
 - node -e "process.stdout.write( \"***** 'eSketch' TEST BEGIN *****\n\" )" && node test.js && node -e "process.stdout.write( \"***** 'eSketch' TEST END *****\n\" )"
 
 artifacts:
