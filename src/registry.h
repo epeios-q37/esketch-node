@@ -1,5 +1,5 @@
 /*
-	Copyright (C) 2016 by Claude SIMON (http://zeusw.org/epeios/contact.html).
+	Copyright (C) 2017 by Claude SIMON (http://zeusw.org/epeios/contact.html).
 
 	This file is part of eSketch.
 
@@ -17,8 +17,8 @@
     along with eSketch.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef REGISTRY__INC
-# define REGISTRY__INC
+#ifndef REGISTRY_INC_
+# define REGISTRY_INC_
 
 # include "sclrgstry.h"
 

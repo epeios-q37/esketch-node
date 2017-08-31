@@ -35,11 +35,12 @@ mods += lstctn mns mtk mtx ntvstr
 mods += que sdr stkbse stkbch stkctn 
 mods += str strng tagsbs tol txf 
 mods += tys uys utf xtf llio 
-mods += dlbrry n4a plgn plgncore tht 
-mods += thtsub bomhdl cdgb64 fil fnm 
-mods += lcl rgstry stsfsm xml xpp 
+mods += dlbrry n4all n4njs plgn plgncore 
+mods += tht thtsub uvqdcl bomhdl cdgb64 
+mods += fil fnm lcl rgstry stsfsm 
+mods += xml xpp 
 mods += sclargmnt sclmisc sclerror scllocale sclrgstry 
-mods += scln4a 
+mods += scln4a sclnjs 
 mods += registry 
 
 pmods += pllio 
@@ -390,7 +391,7 @@ ifeq ("$(target)","$(Android)")
 	rm -rf *.d
 endif
 
-copt += -DVERSION=\""20170813"\"
+copt += -DVERSION=\""20170831"\"
 copt += -DCOPYRIGHT_YEARS=\""2007-2017"\"
 copt += -DIDENTIFIER=\""d6a723cb-e88f-4f2f-b429-3adc207f1d62"\"
 

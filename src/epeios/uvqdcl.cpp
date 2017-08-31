@@ -17,9 +17,9 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#define N4A_COMPILATION_
+#define UVQDCL_COMPILATION_
 
-#include "n4a.h"
+#include "uvqdcl.h"
 
-using namespace n4a;
+using namespace uvq;
 

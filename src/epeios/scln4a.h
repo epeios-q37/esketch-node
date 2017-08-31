@@ -29,38 +29,55 @@
 # endif
 
 # include "err.h"
-# include "n4a.h"
+# include "n4all.h"
 
-namespace scln4a {
-	typedef n4a::cCaller cCaller_;
+// The content of this namespace will be completed by other libraries.
+namespace scln4 {
+	typedef n4all::cCaller cCaller_;
 
-	inline void GetArgument_(
+	// Will declare all needed version of this function, which can be defined in other libraries.
+	template <typename item> void Get(
+		int Index,
+		cCaller_ &Caller,
+		item &Item );
+
+	inline void Get(
 		int Index,
 		cCaller_ &Caller )
 	{}
 
-	inline void GetArgument_(
+	inline void Get(
 		int Index,
 		cCaller_ &Caller,
 		str::dString *Value )
 	{
-		return Caller.GetArgument( Index, n4a::tString, Value );
+		return Caller.GetArgument( Index, n4all::tString, Value );
 	}
 
-	inline void GetArgument_(
+	inline void Get(
 		int Index,
 		cCaller_ &Caller,
 		str::dString &Value )
 	{
-		return GetArgument_( Index, Caller, &Value );
+		return Get( Index, Caller, &Value );
 	}
 
-	inline void GetArgument_(
+	inline void Get(
 		int Index,
 		cCaller_ &Caller,
 		str::wString &Value )
 	{
-		return GetArgument_( Index, Caller, &Value );
+		return Get( Index, Caller, &Value );
+	}
+}
+
+namespace scln4a {
+	typedef n4all::cCaller cCaller_;
+
+	inline void GetArgument_(
+		int Index,
+		cCaller_ &Caller )
+	{
 	}
 
 	template <typename item, typename ...items> inline void GetArgument_(
@@ -69,7 +86,7 @@ namespace scln4a {
 		item &Item,
 		items &...Items )
 	{
-		GetArgument_( Index, Caller, Item );
+		scln4::Get( Index, Caller, Item );
 
 		GetArgument_( Index + 1, Caller, Items... );
 	}
@@ -100,7 +117,7 @@ namespace scln4a {
 		}
 		void SetReturnValue( const str::dString &Value )
 		{
-			C_().SetReturnValue( n4a::tString, &Value );
+			C_().SetReturnValue( n4all::tString, &Value );
 		}
 	};
 
@@ -108,14 +125,14 @@ namespace scln4a {
 
 	class sRegistrar {
 	private:
-		qRMV( n4a::cRegistrar, R_, Registrar_ );
+		qRMV( n4all::cRegistrar, R_, Registrar_ );
 	public:
 		void reset( bso::sBool = true )
 		{
 			Registrar_ = NULL;
 		}
 		qCDTOR( sRegistrar );
-		void Init( n4a::cRegistrar &Registrar )
+		void Init( n4all::cRegistrar &Registrar )
 		{
 			Registrar_ = &Registrar;
 		}
@@ -123,9 +140,18 @@ namespace scln4a {
 		{
 			R_().Register( (void *)Function );
 		}
+		template <typename function, typename ...functions> void Register(
+			function Function,
+			functions ...Functions )
+		{
+			Register( Function );
+			Register( Functions... );
+		}
 	};
 
-	void SCLN4ARegister( sRegistrar &Registrar );	// To define by user.
+	void SCLN4ARegister(
+		sRegistrar &Registrar,
+		void *UP );	// To define by user.
 	void SCLN4AInfo( txf::sOFlow &Flow );	// To define by user.
 
 	extern const char *SCLN4AProductVersion;	// To define by user.

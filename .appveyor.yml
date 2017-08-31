@@ -1,5 +1,5 @@
 environment:
-  version: 20170813
+  version: 20170831
   affix: esketch
   matrix:
     - nodejs_version: "8"
@@ -45,6 +45,7 @@ after_build:
 - set dir=win32-%platform%
 - mkdir %dir%
 - copy %affix%njs.dll %dir%
+# It MUST be '.tar.gz' to be retrieved by 'node-pre-gyp' when installed with 'npm' !
 - 7z a -ttar -so dummy %dir% | 7z a -si %addon%.tar.gz
 
 test_script:
