@@ -1,8 +1,8 @@
 {
   "name": "esketch",
-  "version": "2017.8.31",
+  "version": "2017.9.1",
   "author": "Claude SIMON (http://q37.info/contact/)",
-  "description": "Node.js addon template.",
+  "description": "Node.js addon template",
   "main": "eSketch.js",
   "engines": {
     "node": ">=4"
@@ -10,12 +10,12 @@
   "binary": {
     "module_name": "esketchnjs",
     "module_path": ".",
-    "remote_path": "./epeios-q37/esketch-node/releases/download/v20170831/",
-    "package_name": "{module_name}-v20170831-{platform}-{arch}.tar.gz",
+    "remote_path": "./epeios-q37/esketch-node/releases/download/v20170901/",
+    "package_name": "{module_name}-v20170901-{platform}-{arch}.tar.gz",
     "host": "https://github.com"
   },
   "dependencies": {
-    "njsq": "<=2017.8.31",
+    "njsq": "<=2017.9.1",
     "node-pre-gyp": "0.6.x"
   },
   "devDependencies": {
@@ -31,13 +31,7 @@
     "url": "git+https://github.com/epeios-q37/esketch-node.git"
   },
   "keywords": [
-    "addon",
-    "XML",
-    "parser",
-    "preprocessor",
-    "xpp",
-    "q37",
-    "epeios"
+    "addon","native","C++","njsq","template","q37","epeios"
   ],
   "license": "AGPL-3.0",
   "bugs": {
