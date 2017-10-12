@@ -83,13 +83,16 @@ namespace xtf {
 	{
 		fdr::byte__ Data[5];
 		bso::u8__ Size;
+		bso::sBool Eaten;
 		void reset( bso::bool__ = true )
 		{
 			Size = 0;
+			Eaten = false;
 		}
 		E_CDTOR( utf__ )
 		void Init( void )
 		{
+			Eaten = true;
 			Size = 0;
 		}
 	};
@@ -296,7 +299,7 @@ namespace xtf {
 			return ExpectedFormat;
 		}
 		void _SetMeaning( lcl::meaning_ &Meaning );
-		bso::bool__ _PrefetchUTF( void )
+		bso::bool__ _PrefetchUTF( bso::sBool Eat )
 		{
 			if ( _UTF.Size == 0 ) {
 /*				bso::size__ Size = _F().View( sizeof( _UTF.Data ), _UTF.Data );
@@ -313,10 +316,14 @@ namespace xtf {
 				if ( _UTF.Size != 0 ) {
 					if ( _F().View( _UTF.Size, _UTF.Data ) != _UTF.Size )
 						qRFwk();
-
-					_F().Skip( _UTF.Size );
+					_UTF.Eaten = false;
 				} else
 					return false;
+			}
+
+			if ( Eat && !_UTF.Eaten ) {
+				_F().Skip( _UTF.Size );
+				_UTF.Eaten = true;
 			}
 
 			return true;
@@ -372,12 +379,13 @@ namespace xtf {
 			return BOM;
 		}
 		//f Extract and return next character in flow.
-		flw::byte__ Get( utf__ &UTF )
+		flw::byte__ Get( utf__ *UTF = NULL )
 		{
-			if ( !_PrefetchUTF() )
+			if ( !_PrefetchUTF( true ) )
 				qRFwk();
 
-			UTF = _UTF;
+			if ( UTF != NULL )
+				*UTF = _UTF;
 
 //			_F().Skip( _UTF.Size );
 
@@ -417,6 +425,10 @@ namespace xtf {
 
 			return C;
 		}
+		flw::byte__ Get( utf__ &UTF )
+		{
+			return Get( &UTF );
+		}
 		//f NOTA : if '.Line' == 0; a '\n' or a '\r' was unget()'.
 		const pos__ &Position( void ) const
 		{
@@ -442,10 +454,10 @@ namespace xtf {
 		}
 		//f Return the next character in the flow, but let it in the flow.
 		flw::byte__ View(
-			utf__ &UTF,
+			utf__ *UTF = NULL,
 			bso::bool__ HandleNL = false )
 		{
-			if ( !_PrefetchUTF() )
+			if ( !_PrefetchUTF( false ) )
 				qRFwk();
 
 			flw::byte__ C = _UTF.Data[0];
@@ -457,21 +469,27 @@ namespace xtf {
 
 						_EOL = 0;
 
-//						_F().Skip( _UTF.Size );
+						_F().Skip( _UTF.Size );
 						
-						if ( !_PrefetchUTF() )
+						if ( !_PrefetchUTF( false ) )
 							qRFwk();
 
 						C = _UTF.Data[0];
 				}
 			}
 
-			UTF = _UTF;
+			if ( UTF != NULL )
+				*UTF = _UTF;
 
 			return C;
 		}
-		//f True if at end of text.
-		bso::bool__ EndOfFlow( error__ &Error )	// Si erreur, 'ErrorMeaning' est initialis, sinon reste vide.
+		flw::byte__ View(
+			utf__ &UTF,
+			bso::bool__ HandleNL = false )
+		{
+			return View( &UTF, HandleNL );
+		}
+		bso::bool__ EndOfFlow( error__ *Error = NULL )	// Si erreur, 'ErrorMeaning' est initialis, sinon reste vide.
 		{ 
 			if ( _Error == e_NoError ) {
 				if ( _UTF.Size != 0 )
@@ -480,16 +498,26 @@ namespace xtf {
 				if ( _F().EndOfFlow() )
 					return true;
 
-				if ( !_PrefetchUTF() ) {
-					Error = _Error = eEncodingDiscrepancy; 
+				if ( !_PrefetchUTF( false ) ) {
+					_Error = eEncodingDiscrepancy; 
+
+					if ( Error != NULL )
+						*Error = _Error;
+
 					return true;
 				}
 
 				return false;
 			} else {
-				Error = _Error;
+				if ( Error != NULL )
+					*Error = _Error;
+
 				return true;
 			}
+		}
+		bso::bool__ EndOfFlow( error__ &Error )
+		{
+			return EndOfFlow( &Error );
 		}
 		void Dismiss( void )
 		{
@@ -504,8 +532,11 @@ namespace xtf {
 		{
 			_Position = Position;
 		}
-		flw::iflow__ &UndelyingFlow( void ) const
+		flw::iflow__ &UndelyingFlow( void )
 		{
+			_UTF.Eaten = true;
+			_UTF.Size = 0;
+
 			return _F();
 		}
 		bso::bool__ SetFormat( utf::format__ Format )

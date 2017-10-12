@@ -17,34 +17,23 @@
 	along with the Epeios framework.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#define SCLN4A_COMPILATION_
+// STacK CRaTe
 
-#include "scln4a.h"
+#ifndef STKCRT_INC_
+# define STKCRT_INC_
 
-using namespace scln4a;
+# define STKCRT_NAME		"STKCRT"
 
-#ifdef CPE_S_WIN
-# define FUNCTION_SPEC __declspec(dllexport)
-#else
-# define FUNCTION_SPEC
-#endif
+# if defined( E_DEBUG ) && !defined( STKCRT_NODBG )
+#  define STKCRT_DBG
+# endif
 
-extern "C" FUNCTION_SPEC n4all::fRegister N4ALL_REGISTER_FUNCTION_NAME;
+# include "err.h"
 
-n4all::cLauncher *N4ALLRegister(
-	n4all::cRegistrar *Registrar,
-	n4all::sData *Data )
-{
-	n4all::cLauncher *Launcher = NULL;
-qRFH
-qRFB
-	sclmisc::Initialize( *Data->SCLRack, *Data->Location );
+# include "stkctn.h"
 
-	Launcher = scln4a::SCLN4ARegister( *Registrar, Data->UP );
-qRFR
-	if ( Launcher != NULL )
-		delete Launcher;
-qRFT
-qRFE( sclmisc::ErrFinal() )
-	return Launcher;
+namespace stkcrt {
+	using namespace stkctn;
 }
+
+#endif

@@ -23,11 +23,19 @@
 
 using namespace sclnjs;
 
+void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	str::dString *Value )
+{
+	Caller.GetArgument( Index, n4njs::tString, Value );
+}
+
 namespace {
 	template <typename callback, typename host> void Get_(
 		int Index,
 		n4all::cCaller &Caller,
-		n4all::sEnum Type,
+		n4njs::eType Type,
 		host &Host )
 	{
 	qRH
@@ -68,7 +76,6 @@ template <> void scln4::Get(
 	Get_<n4njs::cUCallback>( Index, Caller, n4njs::tCallback, Callback );
 }
 
-
 txf::text_oflow__ &operator <<(
 	txf::text_oflow__ &Flow,
 	rBuffer &Buffer )
@@ -87,21 +94,74 @@ qRE
 }
 
 namespace {
-	n4njs::fAsyncLauncher Launcher_ = NULL;
+	n4njs::fAsync Async_ = NULL;
 }
 
-void scln4a::SCLN4ARegister(
-	sRegistrar &Registrar,
+namespace {
+	typedef n4all::cLauncher cLauncher_;
+
+	class sLauncher_
+	: public cLauncher_ {
+	protected:
+		virtual void N4ALLLaunch(
+			void *Function,
+			n4all::cCaller &RawCaller ) override
+		{
+			sCaller Caller;
+
+			Caller.Init( RawCaller );
+
+			( (fFunction *)Function )( Caller );
+		}
+		virtual void N4ALLInfo( str::dString &Info ) override
+		{
+		qRH
+			flx::rStringOFlow BaseFlow;
+			txf::sOFlow Flow;
+		qRB
+			BaseFlow.Init( Info );
+			Flow.Init( BaseFlow );
+
+			SCLNJSInfo( Flow );
+		qRR
+		qRT
+		qRE
+		}
+	public:
+		void Init( void )
+		{}
+	};
+}
+
+n4all::cLauncher *scln4a::SCLN4ARegister(
+	n4all::cRegistrar &RegistrarCallback,
 	void *UP )
 {
+	n4all::cLauncher *Launcher = NULL;
+qRH
+	sclnjs::sRegistrar Registrar;
+qRB
 	const n4njs::gShared &Shared = *( const n4njs::gShared* )UP;
 
-	if ( Shared.Launcher == NULL )
+	if ( Shared.Async == NULL )
 		qRFwk();
 
-	Launcher_ = Shared.Launcher;
+	Async_ = Shared.Async;
 
-	sclnjs::SCLNJSRegister( Registrar );
+	Registrar.Init( RegistrarCallback );
+
+	SCLNJSRegister( Registrar );
+
+	Launcher = new sLauncher_;
+
+	if ( Launcher == NULL )
+		qRAlc();
+qRR
+	if ( Launcher != NULL )
+		delete Launcher;
+qRT
+qRE
+	return Launcher;
 }
 
 
@@ -121,5 +181,5 @@ qRE
 
 void sclnjs::Launch( cAsync &Async )
 {
-	return Launcher_( Async );
+	return Async_( Async );
 }

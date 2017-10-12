@@ -712,10 +712,17 @@ namespace bso {
 	typedef u32__ sU32;
 	typedef s32__ sS32;
 
+	typedef u64__ sU64;
+	typedef s64__ sS64;
+
 	typedef sUInt sFlag;
 
 	typedef char__ sChar;
 
 	const bso::sSize SizeMax = BSO_SIZE_MAX;
+
+	typedef sfloat__ sSFloat;
+	typedef float__ sFloat;
+	typedef lfloat__ sLFloat;
 }
 #endif
