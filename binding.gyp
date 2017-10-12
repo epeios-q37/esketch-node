@@ -79,7 +79,7 @@
   },
   {
    "target_name": "action_after_build",
-   "dependencies": [ "<(module_name)" ],
+   "dependencies": [ "<(prefix)<(module_name)" ],
    "copies": [
     {
      "files": [ "<(PRODUCT_DIR)/<(prefix)<(module_name).<(ext)" ],
