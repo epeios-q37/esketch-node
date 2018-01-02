@@ -118,7 +118,7 @@ void sclmisc::ErrFinal( void )
 		ERRRst();
 }
 
-bso::bool__ sclmisc::DisplaySCLBasePendingError( txf::sOFlow &Flow )
+bso::bool__ sclmisc::DisplaySCLBasePendingError( txf::sWFlow &Flow )
 {
 	bso::bool__ Exists = false;
 qRH
@@ -436,7 +436,7 @@ namespace {
 	{
 	qRH
 		flf::rOFlow Flow;
-		txf::sOFlow TFlow;
+		txf::sWFlow TFlow;
 		xml::wWriter Writer;
 		tol::bDateAndTime Buffer;
 	qRB
@@ -462,7 +462,7 @@ namespace {
 	{
 	qRH
 		flf::rOFlow Flow;
-		txf::sOFlow TFlow;
+		txf::sWFlow TFlow;
 		xml::wWriter Writer;
 	qRB
 		if ( !GetRegistry().IsEmpty( Level ) ) {
@@ -498,7 +498,7 @@ void sclmisc::StoreLastingRegistry( void )
 }
 
 void sclmisc::DumpLastingRegistryFile(
-	txf::sOFlow &OFlow,
+	txf::sWFlow &OFlow,
 	const char *Target,
 	const char *Product,
 	const char *Organization )
@@ -663,8 +663,10 @@ namespace {
 
 		if ( !Success && qRPT ) {
 			Meaning.Init();
-			Meaning.SetValue( "" );	// Ne sera pas traduit, puisque la locale n'a pas pu tre lu.
-			Meaning.AddTag( "Unable to open locale file" );	// Ceci remplacera le '%0' ci-dessus.
+			Meaning.SetValue( "" );	// Will not be translated, as the locale file could not be red.
+			// Both tags below will replace the '%0' above.
+			Meaning.AddTag( "Unable to open locale file" );	
+			Meaning.AddTag( SCLMISCTargetName );
 			ReportAndAbort( Meaning );
 		}
 	qRR
@@ -680,19 +682,20 @@ namespace {
 		qRPN )
 	{
 		bso::sBool Success = false;
-	qRH
+	qRH;
 		lcl::meaning Meaning;
-	qRB
+	qRB;
 		Success = InitializeFlow_( CONFIGURATION_DEFAULT_FILENAME_SUFFIX, SuggestedDirectory, Flow, Directory );
 
 		if ( !Success && qRPT ) {
 			Meaning.Init();
 			Meaning.SetValue( SCLMISC_NAME "_UnableToOpenConfigurationFile" );
+			Meaning.AddTag( sclmisc::SCLMISCTargetName );
 			ReportAndAbort( Meaning );
 		}
-	qRR
-	qRT
-	qRE
+	qRR;
+	qRT;
+	qRE;
 		return Success;
 	}
 }
@@ -1063,29 +1066,46 @@ qRE
 }
 
 void sclmisc::LoadXMLAndTranslateTags(
-	const rgstry::tentry__ &FileNameEntry,
-	const sclrgstry::registry_ &Registry,
+	const fnm::rName &Filename,
+	const char *Language,
 	str::string_ &String,
 	char Marker )
 {
-qRH
-	str::string FileName, Unprocessed, Untranslated;
+qRH;
+	str::string Unprocessed, Untranslated;
 	fnm::name___ FileNameLocation;
-	TOL_CBUFFER___ Buffer;
-qRB
-	FileName.Init();
+qRB;
 	Unprocessed.Init();
-	Load_( FileNameEntry, Registry, Unprocessed, FileName );
+	Load( Filename, Unprocessed );
 
-	fnm::GetLocation( FileName, FileNameLocation );
+	fnm::GetLocation( Filename, FileNameLocation );
 
 	Untranslated.Init();
 	xpp::Process( Unprocessed, xml::oIndent, Untranslated, xpp::criterions___( FileNameLocation ) );
 
-	scllocale::TranslateTags( Untranslated, sclrgstry::GetLanguage_( Registry, Buffer ), String, Marker );
-qRR
-qRT
-qRE
+	scllocale::TranslateTags( Untranslated, Language, String, Marker );
+qRR;
+qRT;
+qRE;
+}
+
+void sclmisc::LoadXMLAndTranslateTags(
+	const rgstry::tentry__ &FilenameEntry,
+	const sclrgstry::registry_ &Registry,
+	str::string_ &String,
+	char Marker )
+{
+qRH;
+	str::string Filename;
+	TOL_CBUFFER___ Buffer;
+qRB;
+	Filename.Init();
+	sclrgstry::MGetValue( Registry, FilenameEntry, Filename );
+
+	LoadXMLAndTranslateTags( Filename, sclrgstry::GetLanguage_( Registry, Buffer ), String, Marker );
+qRR;
+qRT;
+qRE;
 }
 
 const sclrgstry::registry_ &sclmisc::GetRegistry( void )
@@ -1487,7 +1507,7 @@ qRT
 qRE
 }
 
-fdr::rODriver &sclmisc::rODriverRack::Init( const fnm::name___ &FileName )
+fdr::rWDriver &sclmisc::rODriverRack::Init( const fnm::name___ &FileName )
 {
 	Filename_.Init( FileName );
 
@@ -1512,7 +1532,7 @@ void sclmisc::rODriverRack::HandleError( void )
 }
 
 
-fdr::rIDriver &sclmisc::rIDriverRack::Init( const fnm::name___ &FileName )
+fdr::rRDriver &sclmisc::rIDriverRack::Init( const fnm::name___ &FileName )
 {
 	Filename_.Init( FileName );
 

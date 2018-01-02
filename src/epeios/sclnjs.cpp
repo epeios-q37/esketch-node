@@ -23,15 +23,24 @@
 
 using namespace sclnjs;
 
-void scln4::Get(
-	int Index,
-	cCaller_ &Caller,
-	str::dString *Value )
-{
-	Caller.GetArgument( Index, n4njs::tString, Value );
-}
-
 namespace {
+	template <typename callback> callback *Get_(
+		int Index,
+		n4all::cCaller &Caller,
+		n4njs::eType Type )
+	{
+		callback *Callback = NULL;
+	qRH;
+	qRB;
+		Caller.GetArgument( Index, Type, &Callback );
+	qRR;
+		if ( Callback != NULL )
+			delete Callback;
+	qRT;
+	qRE;
+		return Callback;
+	}
+
 	template <typename callback, typename host> void Get_(
 		int Index,
 		n4all::cCaller &Caller,
@@ -41,7 +50,7 @@ namespace {
 	qRH
 		callback *Callback = NULL;
 	qRB
-		Caller.GetArgument( Index, Type, &Callback );
+		Callback = Get_<callback>( Index, Caller, Type );
 		Host.Assign( Callback );
 	qRR
 		if ( Callback != NULL )
@@ -51,13 +60,78 @@ namespace {
 	}
 }
 
+template <> void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	sclnjs::rString &String )
+{
+	Get_<n4njs::cUString>( Index, Caller, n4njs::tString, String );
+}
+
+void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	str::dString *Target )
+{
+qRH;
+	sclnjs::rString String;
+qRB;
+	String.Init();
+	Get( Index, Caller, String );
+
+	*Target = String.Callback().Get();
+qRR;
+qRT;
+qRE;
+}
+
+template <> void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	sclnjs::rStrings &Strings )
+{
+	Get_<n4njs::cUStrings>( Index, Caller, n4njs::tStrings, Strings );
+}
+
+void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	str::dStrings *Target )
+{
+qRH;
+	sclnjs::rStrings Strings;
+qRB;
+	Strings.Init();
+	Get( Index, Caller, Strings );
+
+	*Target = Strings.Callback().Get();
+qRR;
+qRT;
+qRE;
+}
+
+template <> void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	sclnjs::rCallbacks &Callbacks )
+{
+	Get_<n4njs::cUCallbacks>( Index, Caller, n4njs::tCallbacks, Callbacks );
+}
+
+template <> void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	sclnjs::rObject &Object )
+{
+	Get_<n4njs::cUObject>( Index, Caller, n4njs::tObject, Object );
+}
 
 template <> void scln4::Get(
 	int Index,
 	cCaller_ &Caller,
 	sclnjs::rRStream &Stream )
 {
-	Get_<n4njs::cURStream>( Index, Caller, n4njs::tStream, Stream );
+	Get_<n4njs::cURStream>( Index, Caller, n4njs::tRStream, Stream );
 }
 
 template <> void scln4::Get(
@@ -66,6 +140,14 @@ template <> void scln4::Get(
 	sclnjs::rBuffer &Buffer )
 {
 	Get_<n4njs::cUBuffer>( Index, Caller, n4njs::tBuffer, Buffer );
+}
+
+template <> void scln4::Get(
+	int Index,
+	cCaller_ &Caller,
+	n4njs::cUCallback *&Callback )
+{
+	Callback = Get_<n4njs::cUCallback>( Index, Caller, n4njs::tCallback );
 }
 
 template <> void scln4::Get(
@@ -117,7 +199,7 @@ namespace {
 		{
 		qRH
 			flx::rStringOFlow BaseFlow;
-			txf::sOFlow Flow;
+			txf::sWFlow Flow;
 		qRB
 			BaseFlow.Init( Info );
 			Flow.Init( BaseFlow );
@@ -177,7 +259,6 @@ qRT
 qRE
 	return Result;
 }
-
 
 void sclnjs::Launch( cAsync &Async )
 {

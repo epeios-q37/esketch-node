@@ -50,116 +50,61 @@ namespace sclnjs {
 		qRVct();
 	}
 
-	template <typename callback> class rBase_
+	template <typename callback> class rCore_
 	{
-	private:
-		callback *Callback_;
 	protected:
-		qRM( callback, C_, Callback_ );
+		qRMV( callback, C_, Callback_ );
 	public:
 		void reset( bso::sBool P = true )
 		{
-			if ( P )
+			if ( P ) {
 				if ( Callback_ != NULL )
 					delete Callback_;
+			}
 
-			tol::reset( P, Callback_ );
+			Callback_ = NULL;
 		}
+		qCVDTOR( rCore_ );
 		void Init( void )
 		{
+			reset();
 			Callback_ = NULL;
 		}
 		void Assign( callback *Callback )
 		{
+			if ( HasAssignation() )
+				qRFwk();
+
 			Callback_ = Callback;
 		}
-		callback &Callback( void )
+		bso::sBool HasAssignation( void ) const
+		{
+			return Callback_ != NULL;
+		}
+		callback &Callback( void ) const
 		{
 			return C_();
 		}
 	};
 
-	typedef rBase_<n4njs::cUCallback> rCallback_;
-
-	inline void TestAndAdd_(
-		n4njs::dArguments_ &Arguments,
-		n4njs::eArgumentType_ Type,
-		void *Value )
-	{
-		n4njs::sArgument_ Argument;
-
-		if ( Value == NULL )
-			qRFwk();
-
-		Argument.Init( Type, Value );
-
-		Arguments.Add( Argument );
-	}
-
-	inline void Add_( n4njs::dArguments_ &Arguments )
-	{}
-
-	inline void Add_(
-		n4njs::dArguments_ &Arguments,
-		const int &Int )
-	{
-		TestAndAdd_( Arguments, n4njs::atInt, new int( Int ) );
-	}
-
-	inline void Add_(
-		n4njs::dArguments_ &Arguments,
-		const str::dString &String )
-	{
-		TestAndAdd_( Arguments, n4njs::atString, new str::wString( String ) );
-	}
-
-	inline void Add_(
-		n4njs::dArguments_ &Arguments,
-		const str::wString &String )
-	{
-		Add_( Arguments, *String );
-	}
-
-	template <typename arg> inline void Add_(
-		n4njs::dArguments_ &Arguments,
-		const arg &Arg )
-	{
-		sclnjs::Add_( Arguments, Arg );
-	}
-	template <typename arg, typename ...args> void Add_(
-		n4njs::dArguments_ &Arguments,
-		const arg &Arg,
-		const args &...Args )
-	{
-		Add_( Arguments, Arg );
-		Add_( Arguments, Args... );
-	}
-
-
-	class rCallback
-	: public rCallback_
+	template <typename type, typename callback> class rBase_
+	: public rCore_<callback>
 	{
 	public:
-		template <typename ...args> void Launch( const args &...Args )
+		const type &Get( void ) const
 		{
-		qRH
-			n4njs::wArguments_ Arguments;
-		qRB
-			Arguments.Init();
-			Add_( Arguments, Args... );
-
-			C_().Launch( n4njs::atVoid, Arguments );
-		qRR
-		qRT
-		qRE
+			return rCore_<callback>::C_().Get();
+		}
+		void Set( const type &Item )
+		{
+			rCore_<callback>::C_().Set( Item );
 		}
 	};
 
-	template <typename callback> class rCore_
-	: public rBase_<callback>
-	{
+	template <typename callback> class rObject_
+	: public rCore_<callback> {
 	protected:
-		using rBase_<callback>::C_;
+		using rCore_<callback>::C_;
 	public:
 		void Set(
 			const char *Key,
@@ -175,7 +120,88 @@ namespace sclnjs {
 		{
 			return C_().EmitError( Message );
 		}
+
 	};
+
+	typedef rBase_<str::dString, n4njs::cUString> rString;
+	typedef rBase_<str::dStrings, n4njs::cUStrings> rStrings;
+	typedef rBase_<n4njs::dCallbacks, n4njs::cUCallbacks> rCallbacks;
+	typedef rObject_<n4njs::cUObject> rObject;
+	typedef rObject_<n4njs::cUCallback> rCallback_;
+
+	typedef n4njs::dArguments dArguments_;
+
+	class dArguments
+	: public dArguments_ {
+	public:
+		void TestAndAdd_(
+			n4njs::eType Type,
+			const void *Value )
+		{
+			n4njs::sArgument Argument;
+
+			if ( Value == NULL )
+				qRFwk();
+
+			Argument.Init( Type, Value );
+
+			dArguments_::Add( Argument );
+		}
+		template <typename callback> void TestAndAdd_(
+			n4njs::eType Type,
+			const rCore_<callback> &Base )
+		{
+			TestAndAdd_( Type, &Base.Callback() );
+		}
+		// Termination function for variadics.
+		inline void TestAndAdd_( void )
+		{}
+		inline void TestAndAdd_( const int &Int )
+		{
+			TestAndAdd_( n4njs::tInt, &Int );
+		}
+		inline void TestAndAdd_( const str::dString &String )
+		{
+			TestAndAdd_( n4njs::tString, &String );
+		}
+		inline void TestAndAdd_( const str::wString &String )
+		{
+			TestAndAdd_( *String );
+		}
+		inline void TestAndAdd_( const str::dStrings &Strings )
+		{
+			TestAndAdd_( n4njs::tStrings, &Strings );
+		}
+		inline void TestAndAdd_( const str::wStrings &Strings )
+		{
+			TestAndAdd_( *Strings );
+		}
+		inline void TestAndAdd_( const rObject &Object )
+		{
+			TestAndAdd_( n4njs::tObject, Object );
+		}
+	public:
+		inline void Add( void )
+		{
+			// Nothing to do; ease the use of variadics templates.
+		}
+		template <typename arg> inline void Add( const arg &Arg )
+		{
+			TestAndAdd_( Arg );
+		}
+		template <typename arg, typename ...args> void Add(
+			const arg &Arg,
+			const args &...Args )
+		{
+			TestAndAdd_( Arg );
+			Add( Args... );
+		}
+		dArguments( s &S )
+			: dArguments_( S )
+		{}
+	};
+
+	qW( Arguments );
 
 	typedef rCore_<n4njs::cUBuffer> rBuffer_;
 
@@ -188,7 +214,7 @@ namespace sclnjs {
 		}
 	};
 
-	typedef rCore_<n4njs::cURStream> rRStream_;
+	typedef rObject_<n4njs::cURStream> rRStream_;
 
 	class rRStream
 	: public rRStream_ {
@@ -210,6 +236,121 @@ namespace sclnjs {
 		}
 	};
 
+	// Launch with 'dArguments' as arguments.
+	template <typename ret_item, typename ret> void Launch_(
+		ret_item &ReturnItem,
+		n4njs::eType ReturnType,
+		n4njs::cUCallback &Callback,
+		const dArguments &Arguments )
+	{
+	qRH;
+		ret *Return = NULL;
+	qRB;
+		Return = (ret *)Callback.Launch( ReturnType, Arguments );
+
+		ReturnItem.Assign( Return );
+	qRR;
+		if ( Return != NULL )
+			delete Return;
+	qRT;
+	qRE;
+	}
+
+	// Launch with variadics as arguments.
+	template <typename ret_item, typename ret, typename ...args> void Launch_(
+		ret_item &ReturnItem,
+		n4njs::eType ReturnType,
+		n4njs::cUCallback &Callback,
+		const args &...Args )
+	{
+	qRH;
+		wArguments Arguments;
+	qRB;
+		Arguments.Init();
+		Arguments.Add( Args... );
+
+		Launch_<ret_item,ret>( ReturnItem, ReturnType, Callback, *Arguments );
+	qRR;
+	qRT;
+	qRE;
+	}
+
+
+	void inline VoidLaunch(
+		n4njs::cUCallback &Callback,
+		const dArguments &Arguments )
+	{
+		Callback.Launch( n4njs::tVoid, Arguments );
+	}
+
+	template <typename ...args> void inline VoidLaunch(
+		n4njs::cUCallback &Callback,
+		const args &...Args )
+	{
+	qRH;
+		wArguments Arguments;
+	qRB;
+		Arguments.Init();
+		Arguments.Add( Args... );
+
+		VoidLaunch( Callback, *Arguments );
+	qRR;
+	qRT;
+	qRE;
+	}
+
+	inline void ObjectLaunch(
+		rObject &Object,
+		n4njs::cUCallback &Callback,
+		const dArguments &Arguments )
+	{
+		Launch_<rObject, n4njs::cUObject>( Object, n4njs::tObject, Callback, Arguments );
+	}
+
+	template <typename ...args> inline void ObjectLaunch(
+		rObject &Object,
+		n4njs::cUCallback &Callback,
+		const args &...Args )
+	{
+		Launch_<rObject, n4njs::cUObject>( Object, n4njs::tObject, Callback, Args... );
+	}
+
+	class rCallback
+	: public rCallback_
+	{
+	public:
+		template <typename ...args> void VoidLaunch( const args &...Args )
+		{
+			return sclnjs::VoidLaunch( C_(), Args... );
+		}
+		void VoidLaunch( const dArguments &Arguments )
+		{
+			return sclnjs::VoidLaunch( C_(), Arguments );
+		}
+		void VoidLaunch( const wArguments &Arguments )
+		{
+			return VoidLaunch( *Arguments );
+		}
+		template <typename ...args> void ObjectLaunch(
+			rObject &Object,
+			const args &...Args )
+		{
+			return sclnjs::ObjectLaunch( Object, C_(), Args... );
+		}
+		void ObjectLaunch(
+			rObject &Object,
+			const dArguments &Arguments )
+		{
+			return sclnjs::ObjectLaunch( Object, C_(), Arguments );
+		}
+		void ObjectLaunch(
+			rObject &Object,
+			const wArguments &Arguments )
+		{
+			return sclnjs::ObjectLaunch( Object, C_(), *Arguments );
+		}
+	};
+
 	void Launch( cAsync &Async );
 
 	typedef scln4a::sCaller sCaller_;
@@ -218,6 +359,7 @@ namespace sclnjs {
 	: public sCaller_
 	{
 	private:
+		int Index_;
 		// Termination method.
 		inline void GetArgument_( int Index )
 		{}
@@ -231,7 +373,16 @@ namespace sclnjs {
 			GetArgument_( Index + 1, Items... );
 		}
 	public:
-		// 'reset(...)', 'Init(...)' from sCaller_.
+		void reset( bso::sBool P = true )
+		{
+			sCaller_::reset( P );
+		}
+		qCDTOR( sCaller );
+		void Init( n4njs::cCaller &Callback )
+		{
+			sCaller_::Init( Callback );
+			Index_ = 0;
+		}
 		template <typename item> void GetArgument(
 			bso::sUInt Index,
 			item &Item ) const
@@ -240,11 +391,16 @@ namespace sclnjs {
 		}
 		template <typename ...items> inline void GetArgument( items &...Items )
 		{
-			GetArgument_( 0, Items... );
+			GetArgument_( Index_, Items... );
+			Index_ += sizeof...( Items );
 		}
 		void SetReturnValue( const str::dString &Value )
 		{
 			C_().SetReturnValue( n4njs::tString, &Value );
+		}
+		void SetReturnValue( const str::dStrings &Values )
+		{
+			C_().SetReturnValue( n4njs::tStrings, &Values );
 		}
 	};
 
@@ -252,13 +408,22 @@ namespace sclnjs {
 
 	typedef scln4a::sRegistrar<fFunction> sRegistrar;
 
-	void SCLNJSInfo( txf::sOFlow &Flow );	// To define by user.
+	void SCLNJSInfo( txf::sWFlow &Flow );	// To define by user.
 	void SCLNJSRegister( sRegistrar &Registrar );	// To define by user
 }
 
-// Declaration of the handling of it own types.
-// Extends same namespace declared in 'scln4a.h'.
+// Required by g++ and Clang, (but not by VC++).
 namespace scln4 {
+	template <> void Get(
+		int Index,
+		cCaller_ &Caller,
+		sclnjs::rObject &Object );
+
+	template <> void Get(
+		int Index,
+		cCaller_ &Caller,
+		sclnjs::rString &String );
+
 	template <> void Get(
 		int Index,
 		cCaller_ &Caller,
@@ -273,6 +438,21 @@ namespace scln4 {
 		int Index,
 		cCaller_ &Caller,
 		sclnjs::rCallback &Callback );
+
+	template <> void Get(
+		int Index,
+		cCaller_ &Caller,
+		sclnjs::rStrings &Strings );
+
+	template <> void Get(
+		int Index,
+		cCaller_ &Caller,
+		sclnjs::rCallbacks &Callbacks );
+
+	template <> void Get(
+		int Index,
+		cCaller_ &Caller,
+		n4njs::cUCallback *&Callback );
 }
 
 txf::text_oflow__ &operator <<(
@@ -280,5 +460,10 @@ txf::text_oflow__ &operator <<(
 	sclnjs::rBuffer &Buffer );
 
 # define SCLNJS_F( name ) void name( sclnjs::sCaller &Caller )
+
+namespace scln4 {
+
+
+}
 
 #endif

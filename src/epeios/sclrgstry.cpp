@@ -345,7 +345,7 @@ void sclrgstry::Load(
 
 void sclrgstry::Load(
 	eLevel Level,
-	flw::sIFlow &Flow,
+	flw::sRFlow &Flow,
 	const fnm::name___ &Directory,
 	const char *RootPath )
 {
@@ -857,8 +857,4 @@ Q37_GCTOR( sclrgstry )
 	SetupLevel_ = Registry_.Create();
 	ArgumentsLevel_ = Registry_.CreateEmbedded();
 	RuntimeLevel_ = Registry_.CreateEmbedded();
-}
-
-namespace {
-
 }
